@@ -254,8 +254,7 @@ CREATE TABLE `bed_type` (
 -- 傾印資料表的資料 `bed_type`
 INSERT INTO `bed_type` VALUES
 ('Bed1', '雙人床'),
-('Bed2', '雙人床+單人床'),
-('Bed3', '單人床');
+('Bed2', '單人床');
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `check_in_info`;
 -- 資料表結構 `check_in_info`
@@ -319,7 +318,8 @@ INSERT INTO `room_fac` VALUES
 ('Fac1', '無線網路'),
 ('Fac2', '無障礙有善'),
 ('Fac3', '獨立衛浴'),
-('Fac4', '廚房');
+('Fac4', '公共衛浴'),
+('Fac5', '廚房');
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `child_fac`;
 -- 資料表結構 `child_fac`
@@ -367,6 +367,22 @@ INSERT INTO `recreation` VALUES
 ('recra3', '煙火'),
 ('recra4', '無人機');
 --------------------------------------------------------
+DROP TABLE IF EXISTS `room_feature`;
+
+-- 資料表結構 `room_feature`
+CREATE TABLE `room_feature` (
+  `r_fea_no` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `r_fea_type` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`r_fea_no`),
+  UNIQUE KEY (`r_fea_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 傾印資料表的資料 `room_feature`
+INSERT INTO `room_feature` VALUES
+('r_fea1', '山景'),
+('r_fea2', '海景');
+--------------------------------------------------------
+
 DROP TABLE IF EXISTS `place_info`;
 -- 資料表結構 `place_info`
 CREATE TABLE `place_info` (
@@ -375,14 +391,14 @@ CREATE TABLE `place_info` (
   `open_time` varchar(9) DEFAULT NULL,
   `camp_address` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `position` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `baby` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `kitchen` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `bathroom` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `child_fac` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `room_fac` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `room_feature` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `pet` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`camp_id`),
   
-  CONSTRAINT `FK_position` FOREIGN KEY (`position`) REFERENCES `place`(`position`)
+  CONSTRAINT `FK_position` FOREIGN KEY (`position`) REFERENCES `place`(`position`),
+  CONSTRAINT `FK_bed_name` FOREIGN KEY (`bed_name`) REFERENCES `bed_type`(`bed_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 傾印資料表的資料 `place_info`
@@ -423,26 +439,6 @@ INSERT INTO user_data (`user_id`, `user_name`, `password`, `email`, `user_addres
 (8, '陳洋澤', 'm788L2VK', 'gutierrez933@gmail.com', '屏東縣長治鄉文學街3號之3', '0954439815', '2020-09-08', 'male', '/img/A0008.jpg'),
 (9, '林瀾芬', 'UprL86my', 'crouch3821@yahoo.com', '宜蘭縣五結鄉和平路和平巷1號', '0952681447', '1969-01-29', 'female', '/img/A0009.jpg'),
 (10, '劉庭莉', '4T7mf9c8', 'turner8074@outlook.com', '花蓮縣吉安鄉東海一街99號', '0913007060', '1985-07-10', 'male', '/img/A0010.jpg');
--- --------------------------------------------------------
-
-DROP TABLE IF EXISTS `last`;
-
--- 資料表結構 `last` pass!
-CREATE TABLE `last` (
-  `last_id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `room_total_num` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `room_reserved` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `room_last` INT not NULL,
-  PRIMARY KEY (`last_id`)
-  
-  -- ,CONSTRAINT `FK_room_total_num` FOREIGN KEY (`room_total_num`) REFERENCES `place_info`(`room_total_num`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- 傾印資料表的資料 `last`
-INSERT INTO `last` VALUES
-('TB11', '20', '5', '15'),
-('TB12', '5', '4', '1'),
-('TB23', '8', '3', '5');
 -- --------------------------------------------------------
 
 DROP TABLE IF EXISTS `r_total_num`;
